@@ -2,7 +2,8 @@
 
 namespace App\Service;
 
-use App\Dao\UserDao;
+use App\Dao\FriendDao;
+use App\Event\RequestSending;
 
 
 /**
@@ -11,26 +12,34 @@ use App\Dao\UserDao;
  * Date: 11/15/18
  * Time: 11:48 PM
  */
-class UserService
+class FriendService
 {
 
-    private $userDao;
+    private $friendDao;
+    private $userService;
 
-    private function getUserDao()
+    private function getFriendDao()
     {
-       if(is_null($this->userDao)){
-           $this->userDao = new UserDao();
+       if(is_null($this->friendDao)){
+           $this->friendDao = new FriendDao();
        }
-       return $this->userDao;
+       return $this->friendDao;
     }
 
-    public function getVerifiedUsers(){
-        return $this->getUserDao()->getVerifiedUsers();
-    }
-
-    public function getFriendByEmail($email)
+    private function getUserService()
     {
-        return $this->getUserDao()->getFriendByEmail($email);
+        if(is_null($this->userService)){
+            $this->userService = new UserService();
+        }
+        return $this->userService;
     }
+
+    public function inviteFriend($loggedInUserId,$email){
+        $user = $this->getUserService()->getUserByEmail($email);
+        $friend = $this->getFriendDao()->save($loggedInUserId,$user->id);
+        event(new RequestSending($user));
+    }
+
+
 
 }

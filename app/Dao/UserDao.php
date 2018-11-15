@@ -18,9 +18,9 @@ class UserDao
         return User::whereNotNull('email_verified_at');
     }
 
-    public function getFriendByEmail($email)
+    public function getUserByEmail($email)
     {
-        return User::where('email',$email);
+        return User::where('email',$email)->first();
     }
 
 }

@@ -28,4 +28,9 @@ class UserService
         return $this->getUserDao()->getVerifiedUsers();
     }
 
+    public function getUserByEmail($email){
+        return $this->getUserDao()->getUserByEmail($email);
+
+    }
+
 }
