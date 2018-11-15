@@ -22,3 +22,7 @@ Route::get('profile', function () {
 })->middleware('verified');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/friend/add', 'FriendController@index')->name('add_friend');
+
+Route::post('/friend/invite', 'FriendController@invite')->name('invite');
