@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Service\FriendService;
 use App\Service\UserService;
-use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
+    private $friendService;
 
-    private $userService;
 
-    private function getUserService()
+    private function getFriendService()
     {
-        if(is_null($this->userService)){
-            $this->userService = new UserService();
+        if(is_null($this->friendService)){
+            $this->friendService = new FriendService();
         }
-        return $this->userService;
+        return $this->friendService;
     }
-
 
     /**
      * Create a new controller instance.
@@ -36,8 +35,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $verifiedUsers = $this->getUserService()->getVerifiedUsers();
-       // dd($verifiedUsers);
-        return view('home');
+        $friends = $this->getFriendService()->getAllFriends();
+        return view('home')->with(array('friends'=>$friends));
     }
 }

@@ -15,14 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::group(array('before' =>'auth'), function()
+{
+    Auth::routes(['verify' => true]);
 
-Auth::routes(['verify' => true]);
 
-Route::get('profile', function () {
-})->middleware('verified');
+    Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('/friend/add', 'FriendController@addFriend')->name('add_friend');
 
-Route::get('/friend/add', 'FriendController@index')->name('add_friend');
+    Route::get('/friends', 'FriendController@index')->name('get_friends');
 
-Route::post('/friend/invite', 'FriendController@invite')->name('invite');
+    Route::get('/friends/{friend_id}', 'FriendController@show')->name('get_friend');
+
+    Route::post('/friend/invite', 'FriendController@invite')->name('invite');
+
+    Route::get('/friend/confirm', 'FriendController@confirmFriendRequest')->name('confirm_request');
+
+});

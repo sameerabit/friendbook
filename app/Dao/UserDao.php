@@ -13,7 +13,7 @@ use App\User;
 class UserDao
 {
 
-    public function getVerifiedUsers()
+    public function getVerifiedUsers($loggedInUserId)
     {
         return User::whereNotNull('email_verified_at');
     }

@@ -6,7 +6,8 @@
  */
 
 require('./bootstrap');
-
+window.$ = window.jQuery = require('jquery');
+import 'jquery-ui/ui/widgets/autocomplete';
 window.Vue = require('vue');
 
 /**
@@ -34,3 +35,27 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 const app = new Vue({
     el: '#app'
 });
+
+$( document ).ready(function() {
+
+    var url = $('meta[name="base_url"]').attr('content');
+    console.log(url);
+    $("#name").autocomplete({
+        minLength: 0,
+        source: url+"/friends",
+        focus: function( event, ui ) {
+            $( "#name" ).val( ui.item.label );
+            return false;
+        },
+        select: function( event, ui ) {
+            console.log(event);
+            $( "#name" ).val( ui.item.label );
+            return false;
+        }
+    }).autocomplete( "instance" )._renderItem = function( ul, item ) {
+        return $( "<li>" )
+            .append( "<a href='/friends/"+item.value+"'>" + item.label + "</a>" )
+            .appendTo( ul );
+    }
+});
+

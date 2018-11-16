@@ -24,8 +24,8 @@ class UserService
        return $this->userDao;
     }
 
-    public function getVerifiedUsers(){
-        return $this->getUserDao()->getVerifiedUsers();
+    public function getVerifiedUsers($loggedInUserId){
+        return $this->getUserDao()->getVerifiedUsers($loggedInUserId);
     }
 
     public function getUserByEmail($email){
